@@ -10,12 +10,12 @@ from langchain.chains.retrieval import create_retrieval_chain
 from langchain_core.prompts import ChatPromptTemplate
 
 llm = ChatOpenAI(
-    openai_api_key=os.getenv('OPENAI_API_KEY'), 
+    openai_api_key=os.getenv('AZURE_OPENAI_KEY'), 
     temperature=0
 )
 
 embedding_provider = OpenAIEmbeddings(
-    openai_api_key=os.getenv('OPENAI_API_KEY')
+    openai_api_key=os.getenv('AZURE_OPENAI_KEY')
     )
 
 graph = Neo4jGraph(

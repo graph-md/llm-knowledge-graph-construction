@@ -2,9 +2,9 @@ import os
 
 from langchain_community.document_loaders import DirectoryLoader, PyPDFLoader
 from langchain.text_splitter import CharacterTextSplitter
-from langchain_openai import OpenAIEmbeddings
+from langchain_openai import AzureOpenAIEmbeddings
 from langchain_neo4j import Neo4jGraph
-from langchain_openai import ChatOpenAI
+from langchain_openai import AzureChatOpenAI
 from langchain_experimental.graph_transformers import LLMGraphTransformer
 from langchain_community.graphs.graph_document import Node, Relationship
 
@@ -13,15 +13,19 @@ load_dotenv()
 
 DOCS_PATH = "llm-knowledge-graph/data/course/pdfs"
 
-llm = ChatOpenAI(
-    openai_api_key=os.getenv('OPENAI_API_KEY'), 
-    model_name="gpt-3.5-turbo"
+llm = AzureChatOpenAI(
+    deployment_name=os.getenv("AZURE_OPENAI_DEPLOYMENT"),
+    api_key=os.getenv("AZURE_OPENAI_KEY"),
+    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+    api_version=os.getenv("AZURE_OPENAI_API_VERSION")
 )
 
-embedding_provider = OpenAIEmbeddings(
-    openai_api_key=os.getenv('OPENAI_API_KEY'),
-    model="text-embedding-ada-002"
-    )
+embedding_provider = AzureOpenAIEmbeddings(
+    model="text-embedding-ada-002",
+    api_key=os.getenv("AZURE_OPENAI_KEY"),
+    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT"),
+    api_version=os.getenv("AZURE_OPENAI_API_VERSION")
+)
 
 graph = Neo4jGraph(
     url=os.getenv('NEO4J_URI'),
